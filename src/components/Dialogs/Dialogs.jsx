@@ -1,7 +1,7 @@
 import './Dialogs.css'
 import Contacts from './Contact/Contacts';
 import DialogContainer from './Dialog/DialogContainer';
-import { Redirect } from 'react-router-dom';
+// import { Redirect } from 'react-router-dom';
 
 const Dialogs = (props) => {
   // var state = props.store.getState()

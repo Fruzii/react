@@ -1,6 +1,6 @@
 import './Profile.css';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
-import Jpg from './../../imgs/babyYoda.jpg';
+// import Jpg from './../../imgs/babyYoda.jpg';
 import Preloader from './../common/Preloader/Preloader';
 import ProfileStatus from './ProfileStatus';
 

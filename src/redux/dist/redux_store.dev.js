@@ -15,6 +15,8 @@ var _usersReducer = require("./reducers/usersReducer");
 
 var _authReducer = require("./reducers/authReducer");
 
+var _appReducer = require("./reducers/appReducer");
+
 var _reduxForm = require("redux-form");
 
 var _reduxThunk = _interopRequireDefault(require("redux-thunk"));
@@ -26,7 +28,8 @@ var reducers = (0, _redux.combineReducers)({
   dialogsPage: _dialogsReducer.dialogsReducer,
   usersPage: _usersReducer.usersReducer,
   auth: _authReducer.authReducer,
-  form: _reduxForm.reducer
+  form: _reduxForm.reducer,
+  app: _appReducer.appReducer
 });
 var store = (0, _redux.createStore)(reducers, (0, _redux.applyMiddleware)(_reduxThunk["default"]));
 window.store = store;

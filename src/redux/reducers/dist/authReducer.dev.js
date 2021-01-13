@@ -54,7 +54,7 @@ exports.setUserData = setUserData;
 
 var setUserAuth = function setUserAuth() {
   return function (dispatch) {
-    _api.authAPI.me().then(function (data) {
+    return _api.authAPI.me().then(function (data) {
       if (data.resultCode === 0) {
         var _data$data = data.data,
             id = _data$data.id,

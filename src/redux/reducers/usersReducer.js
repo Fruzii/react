@@ -120,7 +120,6 @@ export const usersReducer = (state = defaultState, action) => {
     case FOLLOWING_IN_PROGRESS:
       if (action.isFetching) { return { ...state, isFollowingInProgress: [...state.isFollowingInProgress, action.userId] } }
       else { return { ...state, isFollowingInProgress: state.isFollowingInProgress.filter(id => id !== action.userId) } }
-
     default:
       return state
   }

@@ -4,31 +4,50 @@ import { setProfile, setUserStatus, updateStatus } from './../../redux/reducers/
 import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
+import Preloader from './../common/Preloader/Preloader';
 
 class ProfileContainer extends React.Component {
 
-  componentDidMount() {
+  getUserId() {
     let userId = this.props.match.params.userId
     if (!userId && this.props.isAuth) {
       userId = this.props.authId
     }
-    this.props.setProfile(userId)
-    this.props.setUserStatus(this.props.match.params.userId)
+    return userId 
+  }
+
+  componentDidMount() {
+    
+    // alternative method for redirect
+    // 
+    // if (!this.props.match.params.userId && !this.props.isAuth) {
+    //   this.props.history.push('/login')
+    // }
+    // 
+    this.props.setProfile(this.getUserId())
+    this.props.setUserStatus(this.getUserId())
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.match.params.userId !== prevProps.match.params.userId) {
-      this.props.setProfile(this.props.match.params.userId)
-      this.props.setUserStatus(this.props.match.params.userId)
+      this.props.setProfile(this.getUserId())
+      this.props.setUserStatus(this.getUserId())
     }
   }
 
   render() {
     // let userId = this.props.match.params.userId
     // if (this.props.isAuth && !userId) { return <Redirect to={`/profile/${this.props.authId}`} /> }
+    // 
+    // main method for redirect
+    // 
     if (!this.props.match.params.userId && !this.props.isAuth) {
       return <Redirect to='/login'/>
     }
+    if (this.props.state.isFetching) {
+      return <Preloader />
+    }
+    // 
     return (
       <Profile state={this.props.state} setUserStatus={this.props.setUserStatus} updateStatus={this.props.updateStatus} />
     )

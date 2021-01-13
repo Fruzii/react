@@ -2,9 +2,10 @@ import Jpg from './../../imgs/babyYoda.jpg';
 import { profileAPI } from './../../api/api';
 
 const ADD_POST = 'ADD-POST'
-const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT'
+// const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
 const SET_USER_STATUS = 'SET_USER_STATUS'
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 
 let defaultState = {
   posts: [
@@ -16,6 +17,7 @@ let defaultState = {
   ],
   profile: null,
   status: '',
+  isFetching: false,
 }
 
 // const addPost = (state) => {
@@ -76,6 +78,10 @@ export const profileReducer = (state = defaultState, action) => {
          ...state, status: action.text
         }
     }
+    case TOGGLE_IS_FETCHING:
+      return {
+        ...state, isFetching: action.isFetching
+      }
     default:
       return state
   }
@@ -85,11 +91,14 @@ export const addPost = (text) => ({ type: ADD_POST, text })
 // export const updatePostTextActionCreate = (text) => ({ type: UPDATE_POST_TEXT, text: text })
 export const setUserProfile = (text) => ({ type: SET_USER_PROFILE, text: text })
 export const setStatus = (text) => ({ type: SET_USER_STATUS, text: text })
+export const toggleIsFetching = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
 export const setProfile = (id) => {
   return (dispatch) => {
+    dispatch(toggleIsFetching(true))
     profileAPI.getProfile(id).then(response => {
       dispatch(setUserProfile(response.data))
+      dispatch(toggleIsFetching(false))
     });
   }
 }

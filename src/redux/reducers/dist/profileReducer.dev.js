@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateStatus = exports.setUserStatus = exports.setProfile = exports.setStatus = exports.setUserProfile = exports.addPost = exports.profileReducer = void 0;
+exports.updateStatus = exports.setUserStatus = exports.setProfile = exports.toggleIsFetching = exports.setStatus = exports.setUserProfile = exports.addPost = exports.profileReducer = void 0;
 
 var _babyYoda = _interopRequireDefault(require("./../../imgs/babyYoda.jpg"));
 
@@ -25,10 +25,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ADD_POST = 'ADD-POST';
-var UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
+var ADD_POST = 'ADD-POST'; // const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT'
+
 var SET_USER_PROFILE = 'SET_USER_PROFILE';
 var SET_USER_STATUS = 'SET_USER_STATUS';
+var TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 var defaultState = {
   posts: [{
     id: '1',
@@ -63,7 +64,8 @@ var defaultState = {
     active: "0"
   }],
   profile: null,
-  status: ''
+  status: '',
+  isFetching: false
 }; // const addPost = (state) => {
 //   let idCount = state.posts.length + 1
 //   let newPost = {
@@ -132,6 +134,11 @@ var profileReducer = function profileReducer() {
         });
       }
 
+    case TOGGLE_IS_FETCHING:
+      return _objectSpread({}, state, {
+        isFetching: action.isFetching
+      });
+
     default:
       return state;
   }
@@ -167,10 +174,22 @@ var setStatus = function setStatus(text) {
 
 exports.setStatus = setStatus;
 
+var toggleIsFetching = function toggleIsFetching(isFetching) {
+  return {
+    type: TOGGLE_IS_FETCHING,
+    isFetching: isFetching
+  };
+};
+
+exports.toggleIsFetching = toggleIsFetching;
+
 var setProfile = function setProfile(id) {
   return function (dispatch) {
+    dispatch(toggleIsFetching(true));
+
     _api.profileAPI.getProfile(id).then(function (response) {
       dispatch(setUserProfile(response.data));
+      dispatch(toggleIsFetching(false));
     });
   };
 };
