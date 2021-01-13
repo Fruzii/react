@@ -1,0 +1,7 @@
+.formControl {
+  width: 100%;
+}
+
+.formControl.error input{
+  border: 2px red solid;
+}

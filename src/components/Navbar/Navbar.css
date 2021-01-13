@@ -1,0 +1,19 @@
+.nav {
+  display: inline-block;
+  grid-area: nav;
+  margin-top: 10px;
+}
+
+.nav_link {
+  display: block;
+  padding: 10px;
+  color: #7d9cb8;
+  text-decoration: none;
+
+  transition: all .3s;
+}
+
+.nav_link:hover {
+  background-color: #dce1e6;
+}
+

@@ -1,0 +1,106 @@
+.dialogs {
+    display: flex;
+    margin-top: 10px;
+    height: 550px;
+}
+
+.dialogs_inner {
+    display: block;
+    width: 30%;
+    background-color: #fff;
+}
+
+.dialogs_title {
+    margin-left: 20px;
+}
+
+/* Contact */
+
+.dialogs_inner__item {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.dialogs_inner__item.active {
+    background-color: #4a76a8;
+    color: #fff;
+}
+
+.post_img {
+    margin-right: 20px;
+}
+
+/* Dialog */
+.dialog_area__inner {
+    max-height: 530px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+.dialog_area__inner::-webkit-scrollbar {
+    display: none;
+}
+
+.dialog_area {
+    /* position: relative; */
+    width: 70%;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 10px;
+}
+
+.dialog {
+    display: flex;
+    width: 100%;
+    text-align: left;
+    margin: 10px;
+    margin-right: 0;
+}
+
+.dialog.right {
+    justify-content: flex-end;
+    margin-left: -10px;
+}
+
+.message {
+    max-width: 90%;
+    padding: 5px 15px;
+    background-color: #edeef0;
+    border-radius: 15px 15px 15px 0;
+}
+
+.dialog.right .message {
+    border-radius: 15px 15px 0 15px;
+}
+
+.dialog_form {
+    display: flex;
+    width: 100%;
+    padding: 10px;
+}
+
+.dialog_input {
+    width: 100%;
+    padding: 5px 15px;
+    border: 2px solid #edeef0;
+}
+
+.dialog_input__btn {
+    width: 40px;
+    height: 30px;
+    border: none;
+    background-color: transparent;
+    margin-left: 10px;
+}
+
+.dialog_input__btn img {
+    width: 100%;
+}

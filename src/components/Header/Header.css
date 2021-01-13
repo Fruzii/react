@@ -1,0 +1,30 @@
+.header {
+  grid-area: header;
+  align-items: center;
+  background-color: #4a76a8;
+  color: white;
+  text-align: left;
+}
+
+.logo {
+  margin: 10px;
+  height: 30px;
+  pointer-events: none;
+}
+
+.header__inner {
+  display: flex;
+  justify-content: space-between;
+}
+
+.login__wrapper {
+  display: flex;
+}
+
+.login {
+  margin: auto 0;
+}
+
+.login span {
+    color: #fff;
+}
