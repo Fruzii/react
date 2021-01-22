@@ -1,44 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-class ProfileStatus extends React.Component {
-  state = {
-    editMode: false,
-    status: this.props.status
+const ProfileStatus = (props) => {
+
+  let [editMode, setEditMode] = useState(false)
+  let [status, setStatus] = useState(props.status)
+  // let editMode = stateWithSetState[0]
+  // let setEditMode = stateWithSetState[1]
+
+  useEffect(() => {
+    setStatus(props.status)
+  }, [props.status])
+
+  const onStatusChange = (e) => {
+    setStatus(e.currentTarget.value)
   }
 
-  enableEditMode = () => {
-    this.setState({editMode: true})
+  const enableEditMode = () => setEditMode(true)
+  const disableEditMode = () => {
+    setEditMode(false)
+    props.updateStatus(status)
   }
 
-  disableEditMode = () => {
-    this.setState({editMode: false})
-    this.props.updateStatus(this.state.status)
-  }
-
-  onStatusChange = (e) => {
-    this.setState({status: e.currentTarget.value})
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.status !== prevState.status) {
-      this.setState({status: this.state.status})
+  return <div>
+    {editMode
+      ? <div className='profile__status' onBlur={disableEditMode}>
+        <input autoFocus={true} type="text" onChange={onStatusChange} value={status}/>
+      </div>
+      : <div className='profile__status' onDoubleClick={enableEditMode}>
+        <span>{props.status ? props.status : 'change status'}</span>
+      </div>
     }
-  }
-
-  render() {
-    return <div>
-      {this.state.editMode
-        ? <div className='profile__status' onBlur={this.disableEditMode}>
-          <input autoFocus={true} onChange={this.onStatusChange} type="text" value={this.state.status} />
-        </div>
-        : <div className='profile__status' onDoubleClick={this.enableEditMode}>
-          <span>{this.props.status ? this.props.status : 'change status'}</span>
-        </div>
-      }
-
-
-    </div>
-  }
+  </div>
 }
 
 export default ProfileStatus

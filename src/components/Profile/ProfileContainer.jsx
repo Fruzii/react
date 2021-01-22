@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import Preloader from './../common/Preloader/Preloader';
+import { getIsAuth } from './../../redux/reducers/profileSelectors';
 
 class ProfileContainer extends React.Component {
 
@@ -59,9 +60,9 @@ let mapStateToProps = (state) => {
     {
       state: state.profilePage,
       authId: state.auth.id,
-      isAuth: state.auth.isAuth,
-      setUserStatus: state.setUserStatus,
-      updateStatus: state.updateStatus,
+      isAuth: getIsAuth(state),
+      // setUserStatus: state.setUserStatus,
+      // updateStatus: state.updateStatus,
     }
   )
 }

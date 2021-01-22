@@ -19,12 +19,9 @@ export const appReducer = (state = defaultState, action) => {
 
 export const initializedSuccesses = () => ({ type: INITIALIZED_SUCCESSES })
 
-export const initialize = () => {
-  return (dispatch) => {
-    let promise = dispatch(setUserAuth())
-    Promise.all([promise])
-      .then(() => {
-        dispatch(initializedSuccesses())
-      })
-  }
+export const initialize = () => async (dispatch) => {
+  let promise = await dispatch(setUserAuth())
+  Promise.all([promise])
+  dispatch(initializedSuccesses())
 }
+

@@ -3,6 +3,7 @@ import MyPostsContainer from './MyPosts/MyPostsContainer';
 // import Jpg from './../../imgs/babyYoda.jpg';
 import Preloader from './../common/Preloader/Preloader';
 import ProfileStatus from './ProfileStatus';
+import profile_default_pic from '../../imgs/profile_default_pic.png'
 
 const Profile = (props) => {
   if (!props.state.profile) {
@@ -15,7 +16,11 @@ const Profile = (props) => {
         <img className="profile_bg_img" src="https://www.w3schools.com/howto/img_snow_wide.jpg" alt="" />
       </div> */}
       <div className="profile_inner profile_item">
-        <img className="avatar_img" src={props.state.profile.photos.large} alt="" />
+        <img className="avatar_img" 
+        src={props.state.profile.photos.large 
+        ? props.state.profile.photos.large 
+        : profile_default_pic} 
+        alt="" />
         <div className="profile_info">
           <div className="profile_info_inner">
             <div className="profile_name profile_title">{props.state.profile.fullName}</div>

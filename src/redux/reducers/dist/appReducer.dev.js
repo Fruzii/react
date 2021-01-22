@@ -44,10 +44,25 @@ var initializedSuccesses = function initializedSuccesses() {
 exports.initializedSuccesses = initializedSuccesses;
 
 var initialize = function initialize() {
-  return function (dispatch) {
-    var promise = dispatch((0, _authReducer.setUserAuth)());
-    Promise.all([promise]).then(function () {
-      dispatch(initializedSuccesses());
+  return function _callee(dispatch) {
+    var promise;
+    return regeneratorRuntime.async(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.next = 2;
+            return regeneratorRuntime.awrap(dispatch((0, _authReducer.setUserAuth)()));
+
+          case 2:
+            promise = _context.sent;
+            Promise.all([promise]);
+            dispatch(initializedSuccesses());
+
+          case 5:
+          case "end":
+            return _context.stop();
+        }
+      }
     });
   };
 };

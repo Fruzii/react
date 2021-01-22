@@ -31,7 +31,9 @@ var reducers = (0, _redux.combineReducers)({
   form: _reduxForm.reducer,
   app: _appReducer.appReducer
 });
-var store = (0, _redux.createStore)(reducers, (0, _redux.applyMiddleware)(_reduxThunk["default"]));
+var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;
+var store = (0, _redux.createStore)(reducers, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk["default"]))); // let store = createStore(reducers, applyMiddleware(thunk))
+
 window.store = store;
 var _default = store;
 exports["default"] = _default;

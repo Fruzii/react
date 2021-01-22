@@ -1,24 +1,51 @@
 import './Users.css';
-import { followUser, unfollowUser, getUsers } from './../../redux/reducers/usersReducer';
+import { followUser, unfollowUser, requestUsers, setCurrentPage } from './../../redux/reducers/usersReducer';
 import { connect } from 'react-redux';
 import React from 'react';
 import Users from './Users';
+import queryString from 'query-string'
+import { withRouter } from 'react-router-dom';
 
 class UsersContainer extends React.Component {
 
+  pageChangedOnUrl() {
+    let value = queryString.parse(this.props.location.search);
+    let currentPage = Number(value.page)
+    if (!currentPage) {
+      currentPage = this.props.state.currentPage
+      this.props.history.push(`/users?page=${currentPage}`)
+      this.props.requestUsers(currentPage, this.props.state.pageSize)
+    }
+    // this.props.setCurrentPage(currentPage)
+    this.props.requestUsers(currentPage, this.props.state.pageSize)
+  }
+
+  onPageChanged = (page) => {
+    // this.props.requestUsers(page.selected, this.props.state.pageSize)
+    this.props.history.push(`/users?page=${page}`)
+  }
+
   componentDidMount() {
     // this.props.toggleIsFetching(true)
-    // usersAPI.getUsers(this.props.state.currentPage, this.props.state.pageSize).then(data => {
+    // usersAPI.requestUsers(this.props.state.currentPage, this.props.state.pageSize).then(data => {
     //   this.props.setUsers(data.items)
     //   this.props.setTotalCount(data.totalCount)
     //   this.props.toggleIsFetching(false)
     // });
-    this.props.getUsers(this.props.state.currentPage, this.props.state.pageSize)
+    // this.props.requestUsers(this.props.state.currentPage, this.props.state.pageSize)
+    this.pageChangedOnUrl()
   }
 
-  onPageChanged = (page) => {
-    this.props.getUsers(page, this.props.state.pageSize)
+  componentDidUpdate(prevProps, prevState) {
+    let value = queryString.parse(this.props.location.search);
+    let currentPage = value.page
+    let prevValue = queryString.parse(prevProps.location.search);
+    let prevPage = prevValue.page
+    if (currentPage !== prevPage) {
+      this.pageChangedOnUrl()
+    }
   }
+
 
   // let users = props.state.users.map(u =>
   //   <User id={u.id} photo_small={u.photos.small} key={u.id} name={u.name} followed={u.followed} status={u.status} unfollowUser={props.unfollowUser} followUser={props.followUser} />)
@@ -69,7 +96,8 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = {
   followUser,
   unfollowUser,
-  getUsers
+  requestUsers,
+  setCurrentPage,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(UsersContainer))

@@ -46,6 +46,7 @@
 }
 
 .users_img img {
+  border-radius: 50%;
   width: 60px;
   height: 60px;
 }
@@ -57,7 +58,7 @@
 
 .user_profile__btn button {
   margin-top: 15px;
-  width: 60px;
+  width: 75px;
   height: 25px;
   background-color: #edeef0;
   color: #4a76a8;

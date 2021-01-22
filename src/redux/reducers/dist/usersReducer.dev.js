@@ -3,9 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.unfollowUser = exports.followUser = exports.getUsers = exports.followingInProgress = exports.toggleIsFetching = exports.setTotalCount = exports.setCurrentPage = exports.setUsers = exports.unfollowSuccesses = exports.followSuccesses = exports.usersReducer = void 0;
+exports.currentPageSet = exports.unfollowUser = exports.followUser = exports.requestUsers = exports.followingInProgress = exports.toggleIsFetching = exports.setTotalCount = exports.setCurrentPage = exports.setUsers = exports.unfollowSuccesses = exports.followSuccesses = exports.usersReducer = void 0;
 
 var _api = require("./../../api/api");
+
+var _reducer_helper = require("./../../utils/helpers/reducer_helper");
 
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
 
@@ -99,28 +101,28 @@ var usersReducer = function usersReducer() {
   switch (action.type) {
     case FOLLOW:
       return _objectSpread({}, state, {
-        users: state.users.map(function (u) {
-          if (u.id === action.userId) {
-            return _objectSpread({}, u, {
-              followed: true
-            });
-          }
+        users: (0, _reducer_helper.updateObjectArray)(state.users, action.userId, 'id', {
+          followed: true
+        }) // users: state.users.map(u => {
+        //   if (u.id === action.userId) {
+        //     return { ...u, followed: true }
+        //   }
+        //   return u
+        // })
 
-          return u;
-        })
       });
 
     case UNFOLLOW:
       return _objectSpread({}, state, {
-        users: state.users.map(function (u) {
-          if (u.id === action.userId) {
-            return _objectSpread({}, u, {
-              followed: false
-            });
-          }
+        users: (0, _reducer_helper.updateObjectArray)(state.users, action.userId, 'id', {
+          followed: false
+        }) // users: state.users.map(u => {
+        //   if (u.id === action.userId) {
+        //     return { ...u, followed: false }
+        //   }
+        //   return u
+        // })
 
-          return u;
-        })
       });
 
     case SET_USERS:
@@ -227,7 +229,7 @@ var followingInProgress = function followingInProgress(isFetching, userId) {
 
 exports.followingInProgress = followingInProgress;
 
-var getUsers = function getUsers(page, count) {
+var requestUsers = function requestUsers(page, count) {
   return function (dispatch) {
     dispatch(setCurrentPage(page));
     dispatch(setUsers([]));
@@ -241,19 +243,38 @@ var getUsers = function getUsers(page, count) {
   };
 };
 
-exports.getUsers = getUsers;
+exports.requestUsers = requestUsers;
+
+var followUnfollowFlow = function followUnfollowFlow(dispatch, id, apiMethod, AC) {
+  var response;
+  return regeneratorRuntime.async(function followUnfollowFlow$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          dispatch(followingInProgress(true, id));
+          _context.next = 3;
+          return regeneratorRuntime.awrap(apiMethod(id));
+
+        case 3:
+          response = _context.sent;
+
+          if (response.data.resultCode === 0) {
+            dispatch(AC(id));
+          }
+
+          dispatch(followingInProgress(false, id));
+
+        case 6:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+};
 
 var followUser = function followUser(id) {
   return function (dispatch) {
-    dispatch(followingInProgress(true, id));
-
-    _api.usersAPI.followUser(id).then(function (response) {
-      if (response.data.resultCode === 0) {
-        dispatch(followSuccesses(id));
-      }
-
-      dispatch(followingInProgress(false, id));
-    });
+    followUnfollowFlow(dispatch, id, _api.usersAPI.followUser, followSuccesses);
   };
 };
 
@@ -261,15 +282,39 @@ exports.followUser = followUser;
 
 var unfollowUser = function unfollowUser(id) {
   return function (dispatch) {
-    dispatch(followingInProgress(true, id));
+    followUnfollowFlow(dispatch, id, _api.usersAPI.unfollowUser, unfollowSuccesses);
+  };
+}; // OLD
+// 
+// export const followUser = (id) => {
+//   return (dispatch) => {
+//     dispatch(followingInProgress(true, id))
+//     usersAPI.followUser(id).then(response => {
+//       if (response.data.resultCode === 0) {
+//         (dispatch(followSuccesses(id)))
+//       }
+//       dispatch(followingInProgress(false, id))
+//     });
+//   }
+// }
+// export const unfollowUser = (id) => {
+//   return (dispatch) => {
+//     dispatch(followingInProgress(true, id))
+//     usersAPI.unfollowUser(id).then(response => {
+//       if (response.data.resultCode === 0) {
+//         (dispatch(unfollowSuccesses(id)))
+//       }
+//       dispatch(followingInProgress(false, id))
+//     });
+//   }
+// }
 
-    _api.usersAPI.unfollowUser(id).then(function (response) {
-      if (response.data.resultCode === 0) {
-        dispatch(unfollowSuccesses(id));
-      }
 
-      dispatch(followingInProgress(false, id));
-    });
+exports.unfollowUser = unfollowUser;
+
+var currentPageSet = function currentPageSet(page) {
+  return function (dispatch) {
+    dispatch(setCurrentPage(page));
   };
 }; // if (action.type === ADD_MESSAGE) {
 //   addMessage(state)
@@ -279,4 +324,4 @@ var unfollowUser = function unfollowUser(id) {
 // return state
 
 
-exports.unfollowUser = unfollowUser;
+exports.currentPageSet = currentPageSet;
