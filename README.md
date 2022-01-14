@@ -1,4 +1,4 @@
-# [Main page](https://fruzii.github.io/react/)
+# [Link to main page](https://fruzii.github.io/react/)
 
 
 
