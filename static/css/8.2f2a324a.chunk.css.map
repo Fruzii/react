@@ -1,1 +1,0 @@
-{"version":3,"sources":["webpack://src/components/common/FormControl/FormControls.module.css"],"names":[],"mappings":"AAAA,iCACE,UACF,CAEA,iEACE,oBACF","file":"8.2f2a324a.chunk.css","sourcesContent":[".formControl {\r\n  width: 100%;\r\n}\r\n\r\n.formControl.error input{\r\n  border: 2px red solid;\r\n}"]}
